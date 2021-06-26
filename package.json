@@ -1,0 +1,29 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "http-status-codes": "^2.1.4",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^5.12.13",
+    "morgan": "^1.10.0",
+    "morgan-json": "^1.1.0",
+    "nodemon": "^2.0.7",
+    "solc": "^0.8.5",
+    "truffle-hdwallet-provider": "^1.0.17",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "nodemon ./server.js",
+    "compile-contract": "node ./src/ethereum/compile.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
