@@ -21,6 +21,14 @@ const createCitizen = async (citizen, constituency) => {
 		} else if (citizen.gender == gender.OTHER) {
 			constituency.registeredOtherVoters += 1;
 		}
+
+		if (citizen.isOnDuty === true || citizen.isOnDuty === "true") {
+			constituency.registeredOnDutyOfficials += 1;
+			citizen.isOnDuty = true;
+		} else {
+			citizen.isOnDuty = false;
+		}
+
 		await constituency.save(saveOptions);
 		const result = await Citizen.create([citizen], saveOptions);
 		await session.commitTransaction();
@@ -54,8 +62,54 @@ const voteForCandidate = async (voter, candidate, pollingBooth, constituency) =>
 			pollingBooth.otherVoteCount += 1;
 			constituency.otherVoteCount += 1;
 		}
+
+		if (voter.isOnDuty) {
+			constituency.onDutyOfficialsVoteCount += 1;
+			pollingBooth.onDutyOfficailsVoteCount += 1;
+		}
+
 		await voter.save(saveOptions);
 		await candidate.save(saveOptions);
+		await pollingBooth.save(saveOptions);
+		await constituency.save(saveOptions);
+		await session.commitTransaction();
+	} catch (startSessionError) {
+		await session.abortTransaction();
+		throw startSessionError;
+	} finally {
+		session.endSession();
+	}
+};
+
+const voteForNota = async (voter, pollingBooth, constituency) => {
+	const sessionOptions = { retryWrites: true, causalConsistency: true };
+	const session = await mongoose.startSession(sessionOptions);
+	const saveOptions = { validateBeforeSave: true, session, new: true };
+
+	try {
+		session.startTransaction();
+		voter.hasVoted = true;
+		voter.timeVotedAt = Date.now();
+		voter.pollingBoothId = pollingBooth.pollingBoothId;
+		constituency.notaVoteCount += 1;
+		pollingBooth.notaVoteCount += 1;
+		if (voter.gender == gender.MALE) {
+			pollingBooth.maleVoteCount += 1;
+			constituency.maleVoteCount += 1;
+		} else if (voter.gender == gender.FEMALE) {
+			pollingBooth.femaleVoteCount += 1;
+			constituency.femaleVoteCount += 1;
+		} else if (voter.gender == gender.OTHER) {
+			pollingBooth.otherVoteCount += 1;
+			constituency.otherVoteCount += 1;
+		}
+
+		if (voter.isOnDuty) {
+			constituency.onDutyOfficialsVoteCount += 1;
+			pollingBooth.onDutyOfficailsVoteCount += 1;
+		}
+
+		await voter.save(saveOptions);
 		await pollingBooth.save(saveOptions);
 		await constituency.save(saveOptions);
 		await session.commitTransaction();
@@ -71,4 +125,5 @@ module.exports = {
 	getCitizenByVoterId,
 	createCitizen,
 	voteForCandidate,
+	voteForNota,
 };

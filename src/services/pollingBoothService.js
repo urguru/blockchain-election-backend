@@ -29,6 +29,8 @@ const getClientPresentableResult = (pollingBooth) => {
 		maleVoteCount: pollingBooth.maleVoteCount,
 		femaleVoteCount: pollingBooth.femaleVoteCount,
 		otherVoteCount: pollingBooth.otherVoteCount,
+		notaVoteCount: pollingBooth.notaVoteCount,
+		onDutyOfficialsVoteCount: pollingBooth.onDutyOfficialsVoteCount,
 	};
 	return structuredResult;
 };
