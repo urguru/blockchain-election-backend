@@ -25,6 +25,10 @@ const PollingBoothSchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		notaVoteCount: {
+			type: Number,
+			default: 0,
+		}
 	},
 	{
 		timestamps: true,

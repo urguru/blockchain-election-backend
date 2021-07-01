@@ -47,6 +47,7 @@ const getClientPresentableResult = async (candidate, status) => {
 		citizen: {
 			name: candidate.citizen.name,
 			gender: candidate.citizen.gender,
+			isOnDuty: candidate.citizen.isOnDuty,
 			constituency: {
 				constituencyId: candidate.citizen.constituency.constituencyId,
 				name: candidate.citizen.constituency.name,

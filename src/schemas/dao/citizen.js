@@ -23,6 +23,10 @@ const CitizenSchema = new Schema(
 			enum: _.values(gender),
 			required: true,
 		},
+		isOnDuty: {
+			type: Boolean,
+			default: false,
+		},
 		hasVoted: {
 			type: Boolean,
 			default: false,

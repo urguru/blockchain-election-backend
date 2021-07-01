@@ -58,8 +58,29 @@ const voteForCandidate = async (req, res, next) => {
 	}
 };
 
+const voteForNota = async (req, res, next) => {
+	const {
+		admin,
+		params: { voterId },
+	} = req;
+	logger.info(
+		`CitizenController::voteForNota Received vote request from citizen with voterId:${voterId} at pollingBooth:${admin.pollingBoothId}`
+	);
+	try {
+		if (hasAnyRole(admin, [roles.PBO, roles.CEC])) {
+			const result = await citizenService.voteForNota(voterId, admin.pollingBoothId);
+			res.status(OK).json(result);
+		} else {
+			throw ER_FORBIDDEN;
+		}
+	} catch (err) {
+		next(err);
+	}
+};
+
 module.exports = {
 	getCitizenByVoterId,
 	createCitizen,
 	voteForCandidate,
+	voteForNota,
 };

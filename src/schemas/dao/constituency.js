@@ -25,6 +25,10 @@ const ConstituencySchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		registeredOnDutyOfficials: {
+			type: Number,
+			default: 0
+		},
 		maleVoteCount: {
 			type: Number,
 			default: 0,
@@ -37,6 +41,14 @@ const ConstituencySchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		onDutyOfficialsVoteCount: {
+			type: Number,
+			default: 0,
+		},
+		notaVoteCount: {
+			type: Number,
+			default: 0,
+		}
 	},
 	{
 		timestamps: true,
