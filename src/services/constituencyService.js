@@ -31,9 +31,12 @@ const getClientPresentableResult = async (constituency, status) => {
 		registeredMaleVoters: constituency.registeredMaleVoters,
 		registeredFemaleVoters: constituency.registeredFemaleVoters,
 		registeredOtherVoters: constituency.registeredOtherVoters,
+		registeredOnDutyOfficials: constituency.registeredOnDutyOfficials,
 		maleVoteCount: constituency.maleVoteCount,
 		femaleVoteCount: constituency.femaleVoteCount,
 		otherVoteCount: constituency.otherVoteCount,
+		notaVoteCount: constituency.notaVoteCount,
+		onDutyOfficialsVoteCount: constituency.onDutyOfficialsVoteCount,
 		createdAt: constituency.createdAt,
 		updatedAt: constituency.updatedAt,
 	};
@@ -56,6 +59,7 @@ const getStructuredCandidate = async (candidate, status) => {
 		citizen: {
 			name: candidate.citizen.name,
 			gender: candidate.citizen.gender,
+			isOnDuty: candidate.citizen.isOnDuty,
 			constituency: {
 				constituencyId: candidate.citizen.constituency.constituencyId,
 				name: candidate.citizen.constituency.name,

@@ -25,6 +25,5 @@ startUpFunctions.populateCECAndGenesisPollingBooth().then(() => {
 		logger.info(`Server started listening on the port:${port}`);
 	});
 }).catch((err) => {
-	console.log(err);
-	logger.error("Terminating the program as there was some error related to populateCECAndGenesisPollingBooth");
+	logger.error("Terminating the program as there was some error related to populateCECAndGenesisPollingBooth", err.message);
 })

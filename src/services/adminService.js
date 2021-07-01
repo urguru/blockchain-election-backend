@@ -73,6 +73,7 @@ const getClientPresentableResult = async (admin) => {
 			maleVoteCount: admin.pollingBooth.maleVoteCount,
 			femaleVoteCount: admin.pollingBooth.femaleVoteCount,
 			otherVoteCount: admin.pollingBooth.otherVoteCount,
+			onDutyOfficialsVoteCount: admin.pollingBooth.onDutyOfficialsVoteCount,
 		},
 		createdAt: admin.createdAt,
 		updatedAt: admin.updatedAt,

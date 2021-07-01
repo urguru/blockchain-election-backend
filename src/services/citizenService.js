@@ -26,10 +26,10 @@ const getCitizenByVoterId = async (voterId, electionStatus) => {
 const createCitizen = async (citizen) => {
 	const existingConstituency = await constituencyRepository.getConstituencyByConstituencyId(citizen.constituencyId);
 	if (existingConstituency) {
-		const clientPresentableConstituency = await constituencyService.getConstituencyByConstituencyId(citizen.constituencyId, electionStatus.NOT_STARTED);
 		const existingCitizen = await citizenRepository.getCitizenByVoterId(citizen.voterId);
 		if (!existingCitizen) {
 			const result = await citizenRepository.createCitizen(citizen, existingConstituency);
+			const clientPresentableConstituency = await constituencyService.getConstituencyByConstituencyId(citizen.constituencyId, electionStatus.NOT_STARTED);
 			return await getClientPresentableResult(result, clientPresentableConstituency);
 		} else {
 			throw ER_CITIZEN_ALREADY_EXISTS;
@@ -45,6 +45,7 @@ const getClientPresentableResult = async (citizen, constituency) => {
 		voterId: citizen.voterId,
 		name: citizen.name,
 		gender: citizen.gender,
+		isOnDuty: citizen.isOnDuty,
 		constituency,
 		hasVoted: citizen.hasVoted,
 		createdAt: citizen.createdAt,
@@ -89,8 +90,25 @@ const voteForCandidate = async (voterId, candidateVoterId, pollingBoothId) => {
 	}
 };
 
+const voteForNota = async (voterId, pollingBoothId) => {
+	const existingVoter = await citizenRepository.getCitizenByVoterId(voterId);
+	if (existingVoter) {
+		if (!existingVoter.hasVoted) {
+			const existingPollingBooth = await pollingBoothRepository.getPollingBoothByPollingBoothId(pollingBoothId);
+			const existingConstituency = await constituencyRepository.getConstituencyByConstituencyId(existingVoter.constituencyId);
+			await citizenRepository.voteForNota(existingVoter, existingPollingBooth, existingConstituency);
+			return await getCitizenByVoterId(voterId);
+		} else {
+			throw ER_ALREADY_VOTED;
+		}
+	} else {
+		throw ER_INVALID_VOTER_ID;
+	}
+};
+
 module.exports = {
 	createCitizen,
 	getCitizenByVoterId,
 	voteForCandidate,
+	voteForNota,
 };

@@ -22,4 +22,11 @@ module.exports = (app) => {
 		middleware.authenticationHandler,
 		citizenController.voteForCandidate
 	);
+
+	app.post(
+		"/api/v1/citizen/:voterId/vote/nota",
+		middleware.electionStatusHandler.ensureElectionStarted,
+		middleware.authenticationHandler,
+		citizenController.voteForNota
+	)
 };
